@@ -8,21 +8,29 @@ test('render one row per user', () => {
   ]
 
   // Render the component
-  const { container } = render(<UserList users={users} />)
+  render(<UserList users={users} />)
 
   // Find all rows in the table
-
   // screen.logTestingPlaygroundURL()
-
-  // Approach 1
-  // const rows = within(screen.getByTestId('users')).getAllByRole('row')
-
-  // Approach 2
-  // eslint-disable-next-line
-  const rows = container.querySelectorAll('tbody tr')
+  const rows = within(screen.getByTestId('users')).getAllByRole('row')
 
   // Assertion: correct number of rows in the table
   expect(rows).toHaveLength(2)
 })
 
-test('render the email and name of each other', () => {})
+test('render the email and name of each other', () => {
+  const users = [
+    { name: 'Jane', email: 'jane@gmail.com' },
+    { name: 'Sam', email: 'sam@gmail.com' },
+  ]
+
+  render(<UserList users={users} />)
+
+  for (let user of users) {
+    const name = screen.getByRole('cell', { name: user.name })
+    const email = screen.getByRole('cell', { name: user.email })
+
+    expect(name).toBeInTheDocument()
+    expect(email).toBeInTheDocument()
+  }
+})
