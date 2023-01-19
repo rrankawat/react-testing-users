@@ -18,16 +18,10 @@ test('it shows two inputs and button', () => {
 })
 
 test('it calls onUserAdd when the form is submitted', () => {
-  // NOT THE BEST IMPLEMENTATION
-
-  // Moc Function
-  const users = []
-  const onUserAdd = (...user) => {
-    users.push(user)
-  }
+  const mock = jest.fn()
 
   // Try to render my component
-  render(<UserForm onUserAdd={onUserAdd} />)
+  render(<UserForm onUserAdd={mock} />)
 
   // Find the two inputs
   const [nameInput, emailInput] = screen.getAllByRole('textbox')
@@ -47,6 +41,6 @@ test('it calls onUserAdd when the form is submitted', () => {
   user.click(button)
 
   // Assertion to make sure 'onUserAdd' gets called with email/name
-  expect(users).toHaveLength(1)
-  expect(users[0][0]).toEqual({ name: 'Jane', email: 'jane@gmail.com' })
+  expect(mock).toHaveBeenCalled()
+  expect(mock).toHaveBeenCalledWith({ name: 'Jane', email: 'jane@gmail.com' })
 })
